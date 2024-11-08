@@ -1,0 +1,73 @@
+Write a Stored Function namely proc_Grade for the categorization of student. If marks scored by
+students in examination is &lt;=1500 and marks&gt;=990 then student will be placed in distinction category if
+marks scored are between 989 and900 category is first class, if marks 899 and 825 category is Higher
+Second Class Write a PL/SQL block for using procedure created with above requirement.
+ Stud_Marks(name, total_marks)
+ Result(Roll,Name, Class)
+Ans:
+SQL&gt; CREATE OR REPLACE FUNCTION proc_Grade (
+2 p_total_marks IN NUMBER
+3 )
+4 RETURN VARCHAR2
+5 IS
+6 v_class VARCHAR2(30);
+7 BEGIN
+8 IF p_total_marks &gt;= 990 AND p_total_marks &lt;= 1500 THEN
+9 v_class := &#39;Distinction&#39;;
+10 ELSIF p_total_marks &gt;= 900 AND p_total_marks &lt;= 989 THEN
+11 v_class := &#39;First Class&#39;;
+12 ELSIF p_total_marks &gt;= 825 AND p_total_marks &lt;= 899 THEN
+13 v_class := &#39;Higher Second Class&#39;;
+14 ELSE
+15 v_class := &#39;No Grade&#39;;
+16 END IF;
+17
+18 RETURN v_class;
+19 END;
+20 /
+Function created.
+SQL&gt; CREATE TABLE Stud_Marks (
+2 Roll NUMBER PRIMARY KEY,
+3 Name VARCHAR2(50),
+4 Total_Marks NUMBER
+5 );
+Table Created
+SQL&gt; CREATE TABLE Result (
+2 Roll NUMBER PRIMARY KEY,
+3 Name VARCHAR2(50),
+4 Class VARCHAR2(30)
+5 );
+
+Table Created
+BEGIN
+2 FOR student IN (SELECT Roll, Name, Total_Marks FROM Stud_Marks) LOOP
+3 INSERT INTO Result (Roll, Name, Class)
+4 VALUES (student.Roll, student.Name, proc_Grade(student.Total_Marks));
+5 END LOOP;
+6 END;
+7 /
+SQL&gt; INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (1, &#39;Alice&#39;, 1000);
+1 row created.
+SQL&gt; INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (2, &#39;Bob&#39;, 950);
+1 row created.
+SQL&gt; INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (3, &#39;Charlie&#39;, 880);
+1 row created.
+SQL&gt; INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (4, &#39;David&#39;, 820);
+1 row created.
+SQL&gt; SELECT * FROM Result;
+ROLL NAME
+---------- --------------------------------------------------
+CLASS
+------------------------------
+1 Alice
+Distinction
+2 Bob
+First Class
+3 Charlie
+Higher Second Class
+ROLL NAME
+---------- --------------------------------------------------
+CLASS
+------------------------------
+4 David
+No Grade
