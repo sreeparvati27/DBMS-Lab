@@ -1,0 +1,28 @@
+CREATE OR REPLACE PROCEDURE addition(
+    num1 IN NUMBER, 
+    num2 IN NUMBER, 
+    sum1 OUT NUMBER
+) IS
+BEGIN
+    -- Corrected assignment to the output parameter sum1
+    sum1 := num1 + num2;
+END addition;
+/
+
+-- Now, we write the PL/SQL block that declares variables and calls the procedure:
+DECLARE
+    num1 NUMBER(2);
+    num2 NUMBER(3);
+    sum1 NUMBER(5);
+BEGIN
+    -- Assigning values to the variables
+    num1 := 10;
+    num2 := 20;
+
+    -- Calling the procedure
+    addition(num1, num2, sum1);
+
+    -- Displaying the result
+    DBMS_OUTPUT.PUT_LINE('The sum is: ' || sum1);
+END;
+/
