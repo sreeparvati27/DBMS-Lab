@@ -1,0 +1,111 @@
+//jdbc connect
+package DBMSL;
+import java.sql.*;
+public class welcome 
+{
+
+    public static final String DBURL = "jdbc:mysql://localhost:3306/DBMS";
+    public static final String DBUSER = "root";
+    public static final String DBPASS = "root";
+
+	
+		public static void main(String[] args)
+		{
+			try
+			{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver is loaded successfully");
+			Connection con = DriverManager.getConnection(DBURL, DBUSER, DBPASS);			
+			//Connection cons =DriverManager.getConnection("jdbc:mysql://localhost:3307/DBMS", "root", "root");
+			Statement stm = con.createStatement();
+			System.out.println("Connection is establish");
+
+			}
+			catch(Exception e)
+					{
+				System.out.println(e);
+			}
+	}}
+		
+	 //JDBC insert
+package DBMSL;
+import java.sql.*;
+public class Insert {
+
+	 public static final String DBURL = "jdbc:mysql://localhost:3306/DBMS";
+     public static final String DBUSER = "root";
+     public static final String DBPASS = "root";
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+	try
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+		Statement stm = con.createStatement();
+		
+		//Insert the record in to table
+        String sql = "INSERT INTO student (Roll_no, Name, Division) VALUES (?, ?, ?)";
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setInt(1, 102);
+        statement.setString(2, "ram");
+        statement.setString(3, "B");
+        
+        int rowsInserted = statement.executeUpdate();
+        if (rowsInserted > 0)
+        {
+             System.out.println("A new student was inserted successfully!\n");
+        }
+        // Display the record
+        String sql1 = "SELECT * FROM student";
+        Statement stmt = con.createStatement();
+        ResultSet result = stmt.executeQuery(sql1);
+	}
+		
+	catch(Exception e)
+	{
+		System.out.println(e);
+	}
+ 
+	}
+ 
+}
+
+//jdbc delete
+package DBMSL;
+import java.sql.*;
+public class Delete {
+
+		 public static final String DBURL = "jdbc:mysql://localhost:3306/DBMS";
+	    public static final String DBUSER = "root";
+	    public static final String DBPASS = "root";
+		public static void main(String[] args) {
+		try
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(DBURL, DBUSER, DBPASS);
+			//Connection con =DriverManager.getConnection("jdbc:mysql://localhost:3307/DBMS", "root", "root");
+			Statement stm = con.createStatement();
+			
+			 //Delete the record
+	       String sql3 = "DELETE FROM student WHERE name=?";
+	       PreparedStatement statement1 = con.prepareStatement(sql3);
+	       statement1.setString(1, "ram");
+
+	       int rowsDeleted = statement1.executeUpdate();
+	       if (rowsDeleted > 0)
+	       {
+	            System.out.println("A student was deleted successfully!\n");
+	       }
+	  
+		}
+		 
+		
+			
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+
+		}
+
+	}
